@@ -1,8 +1,8 @@
-use graphicsmagick_sys::InitializeMagick;
+use graphicsmagick_sys::{InitializeMagickEx, MAGICK_OPT_NO_SIGNAL_HANDER};
 use std::{
     ffi::{CStr, CString},
     os::raw::{c_char, c_double, c_uint, c_void},
-    ptr::null,
+    ptr::{null, null_mut},
     str::Utf8Error,
     sync::{
         atomic::{AtomicBool, Ordering},
@@ -25,7 +25,7 @@ pub fn initialize() {
         );
 
         unsafe {
-            InitializeMagick(null());
+            InitializeMagickEx(null(), MAGICK_OPT_NO_SIGNAL_HANDER, null_mut());
         }
 
         HAS_INITIALIZED.store(true, Ordering::SeqCst)
